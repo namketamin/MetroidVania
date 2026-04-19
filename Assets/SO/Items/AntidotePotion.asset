@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f7bfa47aeff1604c8cc1071e26cf6b3, type: 3}
+  m_Name: AntidotePotion
+  m_EditorClassIdentifier: 
+  itemName: AntidotePotion
+  itemInfo: Poison cured. Immune for 10s.
+  itemType: 2
+  itemIcon: {fileID: 21300000, guid: 61844db87cd104d4cac49e6f2b466220, type: 3}
+  poisonType: Mushroom
+  time: 10
