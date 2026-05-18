@@ -1,4 +1,5 @@
 using System.Collections;
+using TreeEditor;
 using UnityEngine;
 
 public class PoisonEffect : MonoBehaviour
@@ -7,19 +8,20 @@ public class PoisonEffect : MonoBehaviour
     [SerializeField] private float tickTime=1.5f;
     [SerializeField] private float duration=10f;
 
-    PlayerHealth ph;
-    PlayerAudio pa;
+    PlayerHealth playerHealth;
+    PlayerAudio playerAudio;
     Coroutine poisonCo;
     private void Awake()
     {
-        ph = GetComponentInParent<PlayerHealth>();
-        pa=ph.GetComponent<PlayerAudio>();
+        Transform player = transform.root;
+        playerHealth = player.GetComponent<PlayerHealth>();
+        playerAudio=player.GetComponentInChildren<PlayerAudio>();
     }
     public void ApplyPoison()
     {
-        if (ph.isImmune) return;
+        if (playerHealth.isImmune) return;
         if (poisonCo != null) return;
-        ph.isPoisoned = true;
+        playerHealth.isPoisoned = true;
         poisonCo= StartCoroutine(PoisonRoutine());
     }
     public void StopPoison()
@@ -32,20 +34,22 @@ public class PoisonEffect : MonoBehaviour
     }
     IEnumerator PoisonRoutine()
     {
+        Debug.Log("playerHealth = " + playerHealth);
+        Debug.Log("playerAudio = " + playerAudio);
         float t = 0;
         while (t < duration)
         {
-            if (ph.isImmune)
+            if (playerHealth.isImmune)
             {
                 StopPoison();
                 yield break;
             }
-            pa.PlaySFXClip(pa.poisonedClip);
-            ph.TakeDamage(damagePerTick);
+            playerAudio.PlaySFXClip(playerAudio.poisonedClip);
+            playerHealth.TakeDamage(damagePerTick);
             yield return new WaitForSeconds(tickTime);
             t+=tickTime;
         }
-        ph.isPoisoned = false;
+        playerHealth.isPoisoned = false;
         poisonCo = null;
     }
 }
