@@ -1345,9 +1345,21 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 271758034269843037, guid: f93ea05a3e517924fa2fab385cf2a6c8, type: 3}
+      propertyPath: hurtClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 7ebeb6309b559c74f9e1df38f226e7bc, type: 3}
+    - target: {fileID: 271758034269843037, guid: f93ea05a3e517924fa2fab385cf2a6c8, type: 3}
+      propertyPath: sfxVolume
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 271758034269843037, guid: f93ea05a3e517924fa2fab385cf2a6c8, type: 3}
       propertyPath: slashClip
       value: 
       objectReference: {fileID: 8300000, guid: 8991517b752103b4bbc70b3977871c10, type: 3}
+    - target: {fileID: 271758034269843037, guid: f93ea05a3e517924fa2fab385cf2a6c8, type: 3}
+      propertyPath: poisonedClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 7ebeb6309b559c74f9e1df38f226e7bc, type: 3}
     - target: {fileID: 271758034269843037, guid: f93ea05a3e517924fa2fab385cf2a6c8, type: 3}
       propertyPath: pushSFXSource
       value: 
@@ -1396,6 +1408,10 @@ PrefabInstance:
       propertyPath: inventory
       value: 
       objectReference: {fileID: 769088621}
+    - target: {fileID: 6911609348100074747, guid: f93ea05a3e517924fa2fab385cf2a6c8, type: 3}
+      propertyPath: m_Interpolate
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6998875471744113500, guid: f93ea05a3e517924fa2fab385cf2a6c8, type: 3}
       propertyPath: slider
       value: 

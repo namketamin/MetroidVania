@@ -24,14 +24,14 @@ public class PlayerController : MonoBehaviour
 
     Rigidbody2D rb;
     Animator anim;
-    PlayerAudio pa;
-    GroundCheck gc;
+    PlayerAudio playerAudio;
+    GroundCheck groundCheck;
     private void Awake()
     {
         rb= GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
-        pa=GetComponentInChildren<PlayerAudio>();
-        gc=GetComponentInChildren<GroundCheck>();
+        playerAudio=GetComponentInChildren<PlayerAudio>();
+        groundCheck=GetComponentInChildren<GroundCheck>();
     }
     void Start()
     {
@@ -80,7 +80,7 @@ public class PlayerController : MonoBehaviour
     }
     void Jump()
     {   
-        if(jumpCount<2) pa.PlaySFXClip(pa.jumpClip);
+        if(jumpCount<2) playerAudio.PlaySFXClip(playerAudio.jumpClip);
         if (isGrounded)
         {
             rb.AddForce(Vector2.up * jumpForce);
@@ -110,18 +110,18 @@ public class PlayerController : MonoBehaviour
             LayerMask.GetMask("Interactable"));
 
         anim.SetBool("isPushing", hit.collider != null);
-        if (Mathf.Abs(rb.linearVelocity.x) < 0.01f) pa.StopLoopClip();
+        if (Mathf.Abs(rb.linearVelocity.x) < 0.01f) playerAudio.StopLoopClip();
         if (hit.collider != null)
         {
             if (!isPushing) 
             {
-                pa.PlayLoopClip(pa.pushStoneClip);
+                playerAudio.PlayLoopClip(playerAudio.pushStoneClip);
             }
             isPushing = true;
         }
         else
         {
-            if(isPushing) pa.StopLoopClip();
+            if(isPushing) playerAudio.StopLoopClip();
             isPushing = false;
         }
     }
@@ -137,11 +137,11 @@ public class PlayerController : MonoBehaviour
     }
     public void SetGrounded()
     {
-        bool grounded = gc.IsGrounded();
+        bool grounded = groundCheck.IsGrounded();
         if (grounded&&!lastGrounded)
         {
             dust.SetTrigger("isAfterJumping");
-            pa.PlaySFXClip(pa.landingClip);
+            playerAudio.PlaySFXClip(playerAudio.landingClip);
             jumpCount = 0;
         }
         else if(!grounded&&lastGrounded)
@@ -157,7 +157,7 @@ public class PlayerController : MonoBehaviour
     public void OnFootstep()
     {
         if (!isGrounded) return;
-        pa.PlayFootstep(gc.GetGroundType());
+        playerAudio.PlayFootstep(groundCheck.GetGroundType());
     }
     public void OnLanding()
     {

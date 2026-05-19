@@ -15,7 +15,7 @@ public class PlayerAudio : MonoBehaviour
     public AudioClip pushStoneClip;
 
     public AudioClip slashClip;
-    public AudioClip poisonedClip;
+    public AudioClip hurtClip;
     void Start()
     {
         
