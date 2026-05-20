@@ -94,6 +94,9 @@ MonoBehaviour:
   groundLayer:
     serializedVersion: 2
     m_Bits: 128
+  interactableLayer:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!1 &4744539689816240875
 GameObject:
   m_ObjectHideFlags: 0
@@ -151,6 +154,7 @@ Animator:
   m_WriteDefaultValuesOnDisable: 0
 --- !u!212 &8052937626076730745
 SpriteRenderer:
+  serializedVersion: 2
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -169,6 +173,8 @@ SpriteRenderer:
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
   m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -190,9 +196,11 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: -1866059125
   m_SortingLayer: 6
   m_SortingOrder: -1
+  m_MaskInteraction: 0
   m_Sprite: {fileID: 10917, guid: 0000000000000000f000000000000000, type: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -202,7 +210,6 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &7667262669916619117
 GameObject:
@@ -222,6 +229,7 @@ GameObject:
   - component: {fileID: 6998875471744113500}
   - component: {fileID: 7124644329102586086}
   - component: {fileID: 1900605815833656448}
+  - component: {fileID: 2056427665802186576}
   m_Layer: 6
   m_Name: Player
   m_TagString: Player
@@ -251,6 +259,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &9025104852875169512
 SpriteRenderer:
+  serializedVersion: 2
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -269,6 +278,8 @@ SpriteRenderer:
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
   m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -290,9 +301,11 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: -1866059125
   m_SortingLayer: 6
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_Sprite: {fileID: 1862338328, guid: 3928aa79dbf0d3244bba7c5e0e8a231b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -302,7 +315,6 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!50 &6911609348100074747
 Rigidbody2D:
@@ -327,7 +339,7 @@ Rigidbody2D:
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 4
@@ -450,6 +462,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 2048
   isGrounded: 0
+  lastGrounded: 0
   isPushing: 0
   jumpCount: 0
   isKnockback: 0
@@ -506,6 +519,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inventory: {fileID: 0}
+--- !u!114 &2056427665802186576
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7667262669916619117}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8b09c1d95c9c3242a78979e1b17742d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerAnimator
 --- !u!1 &8223518971703033418
 GameObject:
   m_ObjectHideFlags: 0
@@ -584,14 +609,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sfxSource: {fileID: 8948015484640718471}
-  loopSFXSource: {fileID: 4181353854162167484}
-  feetVolume: 1
+  pushSFXSource: {fileID: 4181353854162167484}
+  sfxVolume: 1
   grassFootstepClip: {fileID: 8300000, guid: 4cd806a63f8fc5d4ea2f04f6ddbf6ef8, type: 3}
   dirtFootstepClip: {fileID: 8300000, guid: 9f51da65c3620a142b61ce5885166558, type: 3}
   landingClip: {fileID: 8300000, guid: 2e4ec4069dfc8cc4fb8b1c2bd4a00ee0, type: 3}
   jumpClip: {fileID: 8300000, guid: cab56808e446f3f459172aa9b2b54219, type: 3}
-  interactVolume: 0
   pushStoneClip: {fileID: 8300000, guid: 638ca817f1c23f947b288ef3df1efa51, type: 3}
+  slashClip: {fileID: 8300000, guid: 8991517b752103b4bbc70b3977871c10, type: 3}
+  hurtClip: {fileID: 8300000, guid: 7ebeb6309b559c74f9e1df38f226e7bc, type: 3}
 --- !u!82 &8948015484640718471
 AudioSource:
   m_ObjectHideFlags: 0

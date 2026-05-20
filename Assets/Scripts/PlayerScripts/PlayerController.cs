@@ -25,12 +25,14 @@ public class PlayerController : MonoBehaviour
     Rigidbody2D rb;
     Animator anim;
     PlayerAudio playerAudio;
+    PlayerAnimator playerAnim;
     GroundCheck groundCheck;
     private void Awake()
     {
         rb= GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         playerAudio=GetComponentInChildren<PlayerAudio>();
+        playerAnim=GetComponent<PlayerAnimator>();
         groundCheck=GetComponentInChildren<GroundCheck>();
     }
     void Start()
@@ -40,7 +42,13 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         Debug.Log(isGrounded);
-        HandleAnimation();
+        //HandleAnimation();
+        playerAnim.UpdateMovement(
+            isGrounded,
+            rb.linearVelocity.x,
+            rb.linearVelocity.y,
+            moveInput
+        );
         Flip();
         Push();
     }
@@ -89,7 +97,8 @@ public class PlayerController : MonoBehaviour
         }
         else if(jumpCount==1&&!isGrounded)
         {
-            anim.SetBool("isDoubleJumping",true);
+            //anim.SetBool("isDoubleJumping",true);
+            playerAnim.PlayDoubleJump();
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, 0f);
             rb.AddForce(Vector2.up * jumpForce);
             jumpCount++;
@@ -109,7 +118,8 @@ public class PlayerController : MonoBehaviour
             0.3f,
             LayerMask.GetMask("Interactable"));
 
-        anim.SetBool("isPushing", hit.collider != null);
+        //anim.SetBool("isPushing", hit.collider != null);
+        playerAnim.SetPushing(hit.collider != null);
         if (Mathf.Abs(rb.linearVelocity.x) < 0.01f) playerAudio.StopLoopClip();
         if (hit.collider != null)
         {
@@ -140,7 +150,8 @@ public class PlayerController : MonoBehaviour
         bool grounded = groundCheck.IsGrounded();
         if (grounded&&!lastGrounded)
         {
-            dust.SetTrigger("isAfterJumping");
+            //dust.SetTrigger("isAfterJumping");
+            playerAnim.PlayLandingDust(dust);
             playerAudio.PlaySFXClip(playerAudio.landingClip);
             jumpCount = 0;
         }
@@ -148,7 +159,8 @@ public class PlayerController : MonoBehaviour
         {
             if (rb.linearVelocity.y > 0)
             {
-                dust.SetTrigger("isBeforeJumping");
+                //dust.SetTrigger("isBeforeJumping");
+                playerAnim.PlayBeforeJumpDust(dust);
             }
         }
         isGrounded = grounded;
