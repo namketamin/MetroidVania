@@ -22,11 +22,11 @@ public class PlayerController : MonoBehaviour
     public int jumpCount = 0;
     public bool isKnockback;
 
-    Rigidbody2D rb;
-    Animator anim;
-    PlayerAudio playerAudio;
-    PlayerAnimator playerAnim;
-    GroundCheck groundCheck;
+    private Rigidbody2D rb;
+    private Animator anim;
+    private PlayerAudio playerAudio;
+    private PlayerAnimator playerAnim;
+    private GroundCheck groundCheck;
     private void Awake()
     {
         rb= GetComponent<Rigidbody2D>();
@@ -42,7 +42,6 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         Debug.Log(isGrounded);
-        //HandleAnimation();
         playerAnim.UpdateMovement(
             isGrounded,
             rb.linearVelocity.x,
@@ -56,19 +55,6 @@ public class PlayerController : MonoBehaviour
     {
         Run();
         SetGrounded();
-    }
-    void HandleAnimation()
-    {
-        anim.SetBool("isRunning", Mathf.Abs(moveInput.x) > 0.01f&&isGrounded);
-
-        anim.SetBool("isGrounded", isGrounded);
-        anim.SetFloat("yVelocity", rb.linearVelocity.y);
-        anim.SetFloat("xVelocity", Mathf.Abs(moveInput.x));
-
-        if (anim.GetBool("isDoubleJumping") && rb.linearVelocity.y < 0)
-        {
-            anim.SetBool("isDoubleJumping", false);
-        }
     }
     void OnMove(InputValue value)
     {
@@ -97,7 +83,6 @@ public class PlayerController : MonoBehaviour
         }
         else if(jumpCount==1&&!isGrounded)
         {
-            //anim.SetBool("isDoubleJumping",true);
             playerAnim.PlayDoubleJump();
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, 0f);
             rb.AddForce(Vector2.up * jumpForce);
@@ -118,7 +103,6 @@ public class PlayerController : MonoBehaviour
             0.3f,
             LayerMask.GetMask("Interactable"));
 
-        //anim.SetBool("isPushing", hit.collider != null);
         playerAnim.SetPushing(hit.collider != null);
         if (Mathf.Abs(rb.linearVelocity.x) < 0.01f) playerAudio.StopLoopClip();
         if (hit.collider != null)
@@ -150,7 +134,6 @@ public class PlayerController : MonoBehaviour
         bool grounded = groundCheck.IsGrounded();
         if (grounded&&!lastGrounded)
         {
-            //dust.SetTrigger("isAfterJumping");
             playerAnim.PlayLandingDust(dust);
             playerAudio.PlaySFXClip(playerAudio.landingClip);
             jumpCount = 0;
@@ -159,7 +142,6 @@ public class PlayerController : MonoBehaviour
         {
             if (rb.linearVelocity.y > 0)
             {
-                //dust.SetTrigger("isBeforeJumping");
                 playerAnim.PlayBeforeJumpDust(dust);
             }
         }

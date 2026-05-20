@@ -8,8 +8,9 @@ public class PlayerHealth : MonoBehaviour
     public float maxHP = 100f;
     public float currentHP;
 
-    private Animator anim;
+    private Animator animator;
     private PlayerController playerCtrl;
+    private PlayerAudio playerAudio;
 
     [SerializeField] private Slider slider;
     [SerializeField] private TextMeshProUGUI healthText;
@@ -25,8 +26,9 @@ public class PlayerHealth : MonoBehaviour
     Coroutine immuneCoroutine;
     private void Awake()
     {
-        anim = GetComponent<Animator>();
+        animator = GetComponent<Animator>();
         playerCtrl = GetComponent<PlayerController>();
+        playerAudio = GetComponentInChildren<PlayerAudio>();
         poisonEffect=GetComponentInChildren<PoisonEffect>();
     }
     void Start()
@@ -42,18 +44,19 @@ public class PlayerHealth : MonoBehaviour
     }
     public void TakeDamage(float dmg)
     {
-        anim.SetTrigger("isHurt");
+        animator.SetTrigger("isHurt");
         currentHP -= dmg;
 
         if (currentHP <= 0)
         {
-            anim.SetTrigger("isDeath");
+            animator.SetTrigger("isDeath");
         }
     }
     public void TakeDamage(float dmg,Transform attacker)
     {
         TakeDamage(dmg);
         playerCtrl.ApplyKnockbackForce(attacker);
+        playerAudio.PlaySFXClip(playerAudio.hurtClip);
     }
     private void UpdateHealthBar()
     {
