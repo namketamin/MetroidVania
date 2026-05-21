@@ -46,6 +46,7 @@ public class PlayerHealth : MonoBehaviour
     {
         animator.SetTrigger("isHurt");
         currentHP -= dmg;
+        playerAudio.PlaySFXClip(PlayerSFX.Hurt);
 
         if (currentHP <= 0)
         {
@@ -56,7 +57,6 @@ public class PlayerHealth : MonoBehaviour
     {
         TakeDamage(dmg);
         playerCtrl.ApplyKnockbackForce(attacker);
-        playerAudio.PlaySFXClip(playerAudio.hurtClip);
     }
     private void UpdateHealthBar()
     {

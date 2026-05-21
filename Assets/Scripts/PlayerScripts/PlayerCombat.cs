@@ -44,7 +44,7 @@ public class PlayerCombat : MonoBehaviour
         if (!isAttacking)
         {
             anim.SetTrigger("isAttacking");
-            pa.PlaySFXClip(pa.slashClip);
+            pa.PlaySFXClip(PlayerSFX.Slash);
             isAttacking = true;
             attackTimer = attackCooldown;
             playerCtrl.jumpCount = 2;

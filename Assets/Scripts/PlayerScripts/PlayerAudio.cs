@@ -1,21 +1,48 @@
+﻿using System.Collections.Generic;
 using UnityEngine;
-
+public enum PlayerSFX
+{
+    Jump,
+    Land,
+    Hurt,
+    Slash,
+    PushStone
+}
 public class PlayerAudio : MonoBehaviour
 {
-    public AudioSource sfxSource;
-    public AudioSource pushSFXSource;
-    [field:SerializeField,Range(0, 1)] public float sfxVolume;
+    [System.Serializable]
+    public struct FootstepData
+    {
+        public GroundType groundType;
+        public AudioClip clip;
+    }
+
+    [SerializeField] private AudioSource oneShotSFXSource;
+    [SerializeField] private AudioSource loopSFXSource;
+
+    [field: SerializeField, Range(0, 1)]
+    public float sfxVolume { get; private set; }
+
     [Header("Footstep")]
-    public AudioClip grassFootstepClip;
-    public AudioClip dirtFootstepClip;
+    [SerializeField] private FootstepData[] footstepDatas;
+    Dictionary<GroundType, AudioClip> footstepDict;
 
-    public AudioClip landingClip;
-    public AudioClip jumpClip;
+    [SerializeField] private AudioClip landingClip;
+    [SerializeField] private AudioClip jumpClip;
 
-    public AudioClip pushStoneClip;
+    [SerializeField] private AudioClip pushStoneClip;
+    [SerializeField] private AudioClip slashClip;
+    [SerializeField] private AudioClip hurtClip;
 
-    public AudioClip slashClip;
-    public AudioClip hurtClip;
+    private void Awake()
+    {
+        footstepDict = new Dictionary<GroundType, AudioClip>();
+
+        foreach (var data in footstepDatas)
+        {
+            footstepDict[data.groundType] = data.clip;
+        }
+    }
     void Start()
     {
         
@@ -24,25 +51,49 @@ public class PlayerAudio : MonoBehaviour
     {
         
     }
-    public void PlaySFXClip(AudioClip clip)
+    public void PlaySFXClip(PlayerSFX type)
     {
-        if (clip.length == 0||clip==null) return;
-        sfxSource.PlayOneShot(clip,sfxVolume);
+        AudioClip clip = GetClip(type);
+        if (clip == null) return;
+
+        oneShotSFXSource.PlayOneShot(clip, sfxVolume);
     }
-    public void PlayLoopClip(AudioClip clip)
+
+    private AudioClip GetClip(PlayerSFX type)
     {
-        if (clip.length == 0 || clip == null) return;
-        pushSFXSource.clip= clip;
-        pushSFXSource.volume= sfxVolume;
-        pushSFXSource.Play();
+        switch (type)
+        {
+            case PlayerSFX.Jump: return jumpClip;
+            case PlayerSFX.Land: return landingClip;
+            case PlayerSFX.Hurt: return hurtClip;
+            case PlayerSFX.Slash: return slashClip;
+            case PlayerSFX.PushStone: return pushStoneClip;
+        }
+        return null;
     }
-    public void StopLoopClip()
+
+    public void PlayLoop(PlayerSFX type)
     {
-        pushSFXSource.Stop();
+        AudioClip clip = GetClip(type);
+        if (clip == null) return;
+
+        if (loopSFXSource.clip == clip && loopSFXSource.isPlaying) return;
+
+        loopSFXSource.clip = clip;
+        loopSFXSource.volume = sfxVolume;
+        loopSFXSource.Play();
     }
+
+    public void StopLoop()
+    {
+        loopSFXSource.Stop();
+    }
+
     public void PlayFootstep(GroundType type)
     {
-        AudioClip clip = type == GroundType.Grass ? grassFootstepClip : dirtFootstepClip;
-        PlaySFXClip(clip);
+        if (!footstepDict.TryGetValue(type, out AudioClip clip)) return;
+        if (clip == null) return;
+
+        oneShotSFXSource.PlayOneShot(clip, sfxVolume);
     }
 }

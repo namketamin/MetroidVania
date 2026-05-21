@@ -44,7 +44,7 @@ public class PoisonEffect : MonoBehaviour
                 StopPoison();
                 yield break;
             }
-            playerAudio.PlaySFXClip(playerAudio.hurtClip);
+            playerAudio.PlaySFXClip(PlayerSFX.Hurt);
             playerHealth.TakeDamage(damagePerTick);
             yield return new WaitForSeconds(tickTime);
             t+=tickTime;

@@ -74,7 +74,7 @@ public class PlayerController : MonoBehaviour
     }
     void Jump()
     {   
-        if(jumpCount<2) playerAudio.PlaySFXClip(playerAudio.jumpClip);
+        if(jumpCount<2) playerAudio.PlaySFXClip(PlayerSFX.Jump);
         if (isGrounded)
         {
             rb.AddForce(Vector2.up * jumpForce);
@@ -104,18 +104,18 @@ public class PlayerController : MonoBehaviour
             LayerMask.GetMask("Interactable"));
 
         playerAnim.SetPushing(hit.collider != null);
-        if (Mathf.Abs(rb.linearVelocity.x) < 0.01f) playerAudio.StopLoopClip();
+        if (Mathf.Abs(rb.linearVelocity.x) < 0.01f) playerAudio.StopLoop();
         if (hit.collider != null)
         {
             if (!isPushing) 
             {
-                playerAudio.PlayLoopClip(playerAudio.pushStoneClip);
+                playerAudio.PlayLoop(PlayerSFX.PushStone);
             }
             isPushing = true;
         }
         else
         {
-            if(isPushing) playerAudio.StopLoopClip();
+            if(isPushing) playerAudio.StopLoop();
             isPushing = false;
         }
     }
@@ -135,7 +135,7 @@ public class PlayerController : MonoBehaviour
         if (grounded&&!lastGrounded)
         {
             playerAnim.PlayLandingDust(dust);
-            playerAudio.PlaySFXClip(playerAudio.landingClip);
+            playerAudio.PlaySFXClip(PlayerSFX.Land);
             jumpCount = 0;
         }
         else if(!grounded&&lastGrounded)
