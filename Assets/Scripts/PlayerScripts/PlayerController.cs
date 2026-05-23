@@ -11,16 +11,16 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float moveSpeed=1f;
     [SerializeField] private float jumpForce = 1f;
 
-    [SerializeField] public float knockbackForce = 1f;
+    [SerializeField] private float knockbackForce = 1f;
 
     [SerializeField] private Animator dust;
     [SerializeField] private LayerMask enemyLayer;
 
-    public bool isGrounded;
-    public bool lastGrounded;
-    public bool isPushing;
-    public int jumpCount = 0;
-    public bool isKnockback;
+    public bool IsGrounded { get; private set; }
+    public bool LastGrounded { get; private set; }
+    public bool IsPushing { get; private set; }
+    public int JumpCount { get; private set; } = 0;
+    public bool IsKnockback { get; private set; }
 
     private Rigidbody2D rb;
     private Animator anim;
@@ -41,9 +41,9 @@ public class PlayerController : MonoBehaviour
     }
     void Update()
     {
-        Debug.Log(isGrounded);
+        Debug.Log(IsGrounded);
         playerAnim.UpdateMovement(
-            isGrounded,
+            IsGrounded,
             rb.linearVelocity.x,
             rb.linearVelocity.y,
             moveInput
@@ -69,24 +69,24 @@ public class PlayerController : MonoBehaviour
     }
     void Run()
     {
-        if (isKnockback) return;
+        if (IsKnockback) return;
         rb.linearVelocity = new Vector2(moveInput.x * moveSpeed, rb.linearVelocity.y);
     }
     void Jump()
     {   
-        if(jumpCount<2) playerAudio.PlaySFXClip(PlayerSFX.Jump);
-        if (isGrounded)
+        if(JumpCount<2) playerAudio.PlaySFXClip(PlayerSFX.Jump);
+        if (IsGrounded)
         {
             rb.AddForce(Vector2.up * jumpForce);
-            jumpCount = 1;
-            isGrounded = false;
+            JumpCount = 1;
+            IsGrounded = false;
         }
-        else if(jumpCount==1&&!isGrounded)
+        else if(JumpCount==1&&!IsGrounded)
         {
             playerAnim.PlayDoubleJump();
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, 0f);
             rb.AddForce(Vector2.up * jumpForce);
-            jumpCount++;
+            JumpCount++;
         }
     }
     void Flip()
@@ -107,50 +107,50 @@ public class PlayerController : MonoBehaviour
         if (Mathf.Abs(rb.linearVelocity.x) < 0.01f) playerAudio.StopLoop();
         if (hit.collider != null)
         {
-            if (!isPushing) 
+            if (!IsPushing) 
             {
                 playerAudio.PlayLoop(PlayerSFX.PushStone);
             }
-            isPushing = true;
+            IsPushing = true;
         }
         else
         {
-            if(isPushing) playerAudio.StopLoop();
-            isPushing = false;
+            if(IsPushing) playerAudio.StopLoop();
+            IsPushing = false;
         }
     }
     public void ApplyKnockbackForce(Transform attacker)
     {
-        isKnockback=true;
+        IsKnockback=true;
         float dir =Mathf.Sign(transform.position.x - attacker.position.x);
         rb.linearVelocity = new Vector2(knockbackForce * dir, rb.linearVelocity.y);
     }
     public void EndKnockback()
     {
-        isKnockback = false;
+        IsKnockback = false;
     }
     public void SetGrounded()
     {
         bool grounded = groundCheck.IsGrounded();
-        if (grounded&&!lastGrounded)
+        if (grounded&&!LastGrounded)
         {
             playerAnim.PlayLandingDust(dust);
             playerAudio.PlaySFXClip(PlayerSFX.Land);
-            jumpCount = 0;
+            JumpCount = 0;
         }
-        else if(!grounded&&lastGrounded)
+        else if(!grounded&&LastGrounded)
         {
             if (rb.linearVelocity.y > 0)
             {
                 playerAnim.PlayBeforeJumpDust(dust);
             }
         }
-        isGrounded = grounded;
-        lastGrounded = grounded;
+        IsGrounded = grounded;
+        LastGrounded = grounded;
     }
     public void OnFootstep()
     {
-        if (!isGrounded) return;
+        if (!IsGrounded) return;
         playerAudio.PlayFootstep(groundCheck.GetGroundType());
     }
     public void OnLanding()

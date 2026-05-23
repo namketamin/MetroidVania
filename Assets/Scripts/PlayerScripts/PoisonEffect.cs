@@ -8,9 +8,11 @@ public class PoisonEffect : MonoBehaviour
     [SerializeField] private float tickTime=1.5f;
     [SerializeField] private float duration=10f;
 
-    PlayerHealth playerHealth;
-    PlayerAudio playerAudio;
-    Coroutine poisonCo;
+    public bool IsPoisoned { get; private set; }
+
+    private PlayerHealth playerHealth;
+    private PlayerAudio playerAudio;
+    private Coroutine poisonCo;
     private void Awake()
     {
         Transform player = transform.root;
@@ -19,9 +21,9 @@ public class PoisonEffect : MonoBehaviour
     }
     public void ApplyPoison()
     {
-        if (playerHealth.isImmune) return;
+        if (playerHealth.IsImmune) return;
         if (poisonCo != null) return;
-        playerHealth.isPoisoned = true;
+        IsPoisoned = true;
         poisonCo= StartCoroutine(PoisonRoutine());
     }
     public void StopPoison()
@@ -31,6 +33,7 @@ public class PoisonEffect : MonoBehaviour
             StopCoroutine(poisonCo);
             poisonCo= null;
         }
+        IsPoisoned = false;
     }
     IEnumerator PoisonRoutine()
     {
@@ -39,7 +42,7 @@ public class PoisonEffect : MonoBehaviour
         float t = 0;
         while (t < duration)
         {
-            if (playerHealth.isImmune)
+            if (playerHealth.IsImmune)
             {
                 StopPoison();
                 yield break;
@@ -49,7 +52,7 @@ public class PoisonEffect : MonoBehaviour
             yield return new WaitForSeconds(tickTime);
             t+=tickTime;
         }
-        playerHealth.isPoisoned = false;
+        IsPoisoned = false;
         poisonCo = null;
     }
 }

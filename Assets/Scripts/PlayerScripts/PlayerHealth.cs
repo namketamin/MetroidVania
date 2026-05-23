@@ -3,6 +3,11 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
+public enum DamageType
+{
+    Enemy,
+    Spike
+}
 public class PlayerHealth : MonoBehaviour
 {
     public float maxHP = 100f;
@@ -19,9 +24,8 @@ public class PlayerHealth : MonoBehaviour
     [SerializeField] private GameObject statusUI;
     [SerializeField] private TextMeshProUGUI antidoteEffectTime;
 
-    public bool isDeath;
-    public bool isPoisoned;
-    public bool isImmune;
+    public bool IsDeath { get; private set; }
+    public bool IsImmune { get; private set; }
 
     Coroutine immuneCoroutine;
     private void Awake()
@@ -40,8 +44,9 @@ public class PlayerHealth : MonoBehaviour
     {
         UpdateHealthBar();
         UpdateHealthText();
-        statusUI.SetActive(isImmune);
+        statusUI.SetActive(IsImmune);
     }
+
     public void TakeDamage(float dmg)
     {
         animator.SetTrigger("isHurt");
@@ -51,6 +56,7 @@ public class PlayerHealth : MonoBehaviour
         if (currentHP <= 0)
         {
             animator.SetTrigger("isDeath");
+
         }
     }
     public void TakeDamage(float dmg,Transform attacker)
@@ -68,24 +74,23 @@ public class PlayerHealth : MonoBehaviour
     }
     public void Death()
     {
+        IsDeath = true;
         Destroy(gameObject);
-        isDeath = true;
     }
     public void CurePoison(float time)
     {
-        if (isPoisoned)
+        if (poisonEffect.IsPoisoned)
         {
-            isPoisoned = false;
             poisonEffect.StopPoison();
         }
         if (immuneCoroutine != null) StopCoroutine(immuneCoroutine);
 
         immuneCoroutine= StartCoroutine(PoisonImunityRoutine(time));
-        isImmune = true;
+        IsImmune = true;
     }
     IEnumerator PoisonImunityRoutine(float time)
     {
-        isImmune = true;
+        IsImmune = true;
         while (time > 0)
         {
             antidoteEffectTime.text = Mathf.CeilToInt(time) + "s";
@@ -93,7 +98,7 @@ public class PlayerHealth : MonoBehaviour
             time -=Time.deltaTime;
         }
         antidoteEffectTime.text = "";
-        isImmune=false;
+        IsImmune=false;
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {

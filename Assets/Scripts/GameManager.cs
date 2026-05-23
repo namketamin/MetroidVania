@@ -16,7 +16,7 @@ public class GameManager : MonoBehaviour
     }
     void Update()
     {
-        if (playerHealth.isDeath) GameOver();
+        if (playerHealth.IsDeath) GameOver();
     }
     public void AddScore(int score)
     {

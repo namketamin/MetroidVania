@@ -6,7 +6,8 @@ public enum PlayerSFX
     Land,
     Hurt,
     Slash,
-    PushStone
+    PushStone,
+    PickupItem
 }
 public class PlayerAudio : MonoBehaviour
 {
@@ -33,6 +34,8 @@ public class PlayerAudio : MonoBehaviour
     [SerializeField] private AudioClip pushStoneClip;
     [SerializeField] private AudioClip slashClip;
     [SerializeField] private AudioClip hurtClip;
+
+    [SerializeField] private AudioClip pickupItemClip;
 
     private void Awake()
     {
@@ -68,6 +71,7 @@ public class PlayerAudio : MonoBehaviour
             case PlayerSFX.Hurt: return hurtClip;
             case PlayerSFX.Slash: return slashClip;
             case PlayerSFX.PushStone: return pushStoneClip;
+            case PlayerSFX.PickupItem: return pickupItemClip;
         }
         return null;
     }
@@ -88,7 +92,6 @@ public class PlayerAudio : MonoBehaviour
     {
         loopSFXSource.Stop();
     }
-
     public void PlayFootstep(GroundType type)
     {
         if (!footstepDict.TryGetValue(type, out AudioClip clip)) return;

@@ -3,9 +3,10 @@ using UnityEngine;
 public class PickupItem : MonoBehaviour
 {
     [SerializeField] private Inventory inventory;
+    private PlayerAudio playerAudio;
     void Start()
     {
-        
+        playerAudio = GetComponentInChildren<PlayerAudio>();
     }
     void Update()
     {
@@ -17,6 +18,7 @@ public class PickupItem : MonoBehaviour
         {
             Item item = collision.GetComponent<Item>();
             inventory.AddItem(item.itemData);
+            playerAudio.PlaySFXClip(PlayerSFX.PickupItem);
             Destroy(item.gameObject);
         }
     }

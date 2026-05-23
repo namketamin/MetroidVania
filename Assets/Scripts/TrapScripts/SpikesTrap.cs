@@ -12,6 +12,9 @@ public class SpikesTrap : MonoBehaviour
     [SerializeField] private float spikesDmg = 1f;
     BoxCollider2D dmgCol;
     Animator anim;
+
+    private static bool canDamagePlayer = true;
+    [SerializeField] private float damageCooldown = 0.2f;
     private void Awake()
     {
         anim = GetComponent<Animator>();
@@ -34,8 +37,8 @@ public class SpikesTrap : MonoBehaviour
             yield return new WaitForSeconds(interval);
 
             anim.Play("SpikesExtend");
-            yield return new WaitForSeconds(extendClip.length);
             dmgCol.enabled = true;
+            yield return new WaitForSeconds(extendClip.length);
             yield return new WaitForSeconds(holdExtendTime);
 
             anim.Play("SpikesRetract");
@@ -43,12 +46,24 @@ public class SpikesTrap : MonoBehaviour
             yield return new WaitForSeconds(retractClip.length);
         }
     }
+    IEnumerator DamageCooldown()
+    {
+        canDamagePlayer = false;
+
+        yield return new WaitForSeconds(damageCooldown);
+
+        canDamagePlayer = true;
+    }
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        if (!canDamagePlayer) return;
+
         if (collision.gameObject.CompareTag("Player"))
         {
             var ph = collision.gameObject.GetComponent<PlayerHealth>();
             ph.TakeDamage(spikesDmg);
+
+            StartCoroutine(DamageCooldown());
         }
     }
 }

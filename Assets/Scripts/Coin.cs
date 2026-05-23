@@ -3,7 +3,9 @@ using UnityEngine;
 
 public class Coin : MonoBehaviour
 {
-    Animator animator;
+    private Animator animator;
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip pickupClip;
     private void Awake()
     {
         animator = GetComponent<Animator>();
@@ -27,7 +29,8 @@ public class Coin : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            GameManager gm = FindFirstObjectByType<GameManager>();gm.AddScore(1);
+            GameManager gm = FindAnyObjectByType<GameManager>();gm.AddScore(1);
+            audioSource.PlayOneShot(pickupClip);
             StartCoroutine(DestroyCoin());
         }
     }

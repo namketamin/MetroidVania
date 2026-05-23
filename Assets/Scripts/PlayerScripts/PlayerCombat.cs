@@ -34,7 +34,7 @@ public class PlayerCombat : MonoBehaviour
     }
     void OnAttack(InputValue value)
     {
-        if (value.isPressed && !playerCtrl.isPushing)
+        if (value.isPressed && !playerCtrl.IsPushing)
         {
             Attack();
         }
@@ -47,7 +47,7 @@ public class PlayerCombat : MonoBehaviour
             pa.PlaySFXClip(PlayerSFX.Slash);
             isAttacking = true;
             attackTimer = attackCooldown;
-            playerCtrl.jumpCount = 2;
+            //playerCtrl.jumpCount = 2;
         }
     }
     public void DealDamage()
