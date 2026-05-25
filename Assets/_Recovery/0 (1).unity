@@ -2122,10 +2122,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6003943466772654544, guid: cc4ae41097f20c34e841a4a10c0e8256, type: 3}
-      propertyPath: audioSource
-      value: 
-      objectReference: {fileID: 1536778461}
     - target: {fileID: 6957884451345138314, guid: cc4ae41097f20c34e841a4a10c0e8256, type: 3}
       propertyPath: m_Name
       value: Inventory
@@ -3481,11 +3477,6 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
---- !u!82 &1536778461 stripped
-AudioSource:
-  m_CorrespondingSourceObject: {fileID: 5685337802427158318, guid: cc4ae41097f20c34e841a4a10c0e8256, type: 3}
-  m_PrefabInstance: {fileID: 1044633192}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &1588702330 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4969330067530904172, guid: 117d89f58c859774197d43861a45ab01, type: 3}

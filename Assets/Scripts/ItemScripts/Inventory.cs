@@ -9,9 +9,16 @@ public class Inventory : MonoBehaviour
     [SerializeField] private Image currentItemImg;
     [SerializeField] private TextMeshProUGUI currentItemQuantityText;
     [SerializeField] private TextMeshProUGUI itemInfoText;
-    ItemSlot currentItem;
+    public ItemSlot currentItem { get; private set; }   
 
     [SerializeField] private GameObject player;
+
+    private ItemAudio itemAudio;
+    private void Awake()
+    {
+        itemAudio = GetComponent<ItemAudio>();
+    }
+
     void Start()
     {
         SetCurrentItemUIVisible(false);
@@ -83,6 +90,9 @@ public class Inventory : MonoBehaviour
         int removedIndex=items.IndexOf(currentItem);
 
         if (currentItem.itemData.UseItem(player)) currentItem.quantity --;
+
+        itemAudio.PlayItemSFX(currentItem.itemData.itemType);
+
         if (currentItem.quantity == 0)
         {
             RemoveItem(currentItem);
@@ -101,6 +111,7 @@ public class Inventory : MonoBehaviour
             DisplayItemUI();
         }
     }
+
     public void SetCurrentItemUIVisible(bool isVisible)
     {
         currentItemImg.gameObject.SetActive(isVisible);

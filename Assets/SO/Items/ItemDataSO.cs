@@ -10,8 +10,8 @@ public abstract class ItemDataSO : ScriptableObject
     public ItemType itemType;
     public Sprite itemIcon;
 
-    [Header("Audio")]
-    public AudioClip useSFX;
+    //[Header("Audio")]
+    //public AudioClip useSFX;
 
     public bool UseItem(GameObject player)
     {

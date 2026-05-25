@@ -12,7 +12,7 @@ public class HealItemDataSO : ItemDataSO
     protected override bool Use(GameObject player)
     {
         PlayerHealth ph = player.GetComponent<PlayerHealth>();
-        if (ph.currentHP == ph.maxHP) return false;
+        if (ph.currentHP == ph.maxHP) return true;
         if (ph.currentHP+healAmount > ph.maxHP)
         {
             ph.currentHP = ph.maxHP;
